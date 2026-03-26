@@ -32,11 +32,19 @@ public class Etal {
 				throw new IllegalStateException("L'étal n'est pas occupé");
 			}
 			etalOccupe = false;
-			StringBuilder chaine = new StringBuilder("Le vendeur " + vendeur.getNom() + " quitte son étal, ");
+			StringBuilder chaine = new StringBuilder();
+			chaine.append("Le vendeur ");
+			chaine.append(vendeur.getNom());
+			chaine.append(" quitte son étal, ");
+			
 			int produitVendu = quantiteDebutMarche - quantite;
 
 			if (produitVendu > 0) {
-				chaine.append("il a vendu " + produitVendu + " parmi " + produit + ".\n");
+				chaine.append("il a vendu ");
+				chaine.append(produitVendu);
+				chaine.append(" parmi ");
+				chaine.append(produit);
+				chaine.append(".\n");
 			} else {
 				chaine.append("il n'a malheureusement rien vendu.\n");
 			}
@@ -56,46 +64,67 @@ public class Etal {
 	}
 
 	public String acheterProduit(int quantiteAcheter, Gaulois acheteur) {
-		try {
 
-			if (acheteur == null) {
-				throw new NullPointerException("Acheteur null");
-			}
+	    // gestion du null (exception)
+	    try {
+	        acheteur.getNom();
+	    } catch (NullPointerException e) {
+	        e.printStackTrace();
+	        return "";
+	    }
 
-			if (quantiteAcheter < 1) {
-				throw new IllegalArgumentException("Quantité invalide");
-			}
+	    // quantité invalide (pas d'exception )
+	    if (quantiteAcheter < 1) {
+	        return "";
+	    }
 
-			if (!etalOccupe) {
-				throw new IllegalStateException("Etal vide");
-			}
-			StringBuilder chaine = new StringBuilder();
-			chaine.append(
-					acheteur.getNom() + " veut acheter " + quantiteAcheter + " " + produit + " à " + vendeur.getNom());
-			if (quantite == 0) {
-				chaine.append(", malheureusement il n'y en a plus !");
-				quantiteAcheter = 0;
-			}
-			if (quantiteAcheter > quantite) {
-				chaine.append(", comme il n'y en a plus que " + quantite + ", " + acheteur.getNom() + " vide l'étal de "
-						+ vendeur.getNom() + ".\n");
-				quantiteAcheter = quantite;
-				quantite = 0;
-			}
-			if (quantite != 0) {
-				quantite -= quantiteAcheter;
-				chaine.append(". " + acheteur.getNom() + ", est ravi de tout trouver sur l'étal de " + vendeur.getNom()
-						+ "\n");
-			}
-			return chaine.toString();
-		} catch (NullPointerException e) {
+	    // étal vide (pas d'exception )
+	    if (!etalOccupe) {
+	        return "";
+	    }
 
-			e.printStackTrace();
-			return "";
-		}
+	    StringBuilder chaine = new StringBuilder();
 
+	    chaine.append(acheteur.getNom())
+	          .append(" veut acheter ")
+	          .append(quantiteAcheter)
+	          .append(" ")
+	          .append(produit)
+	          .append(" à ")
+	          .append(vendeur.getNom());
+
+	    if (quantite == 0) {
+	        chaine.append(", malheureusement il n'y en a plus !");
+	        quantiteAcheter = 0;
+	    }
+
+	    if (quantiteAcheter > quantite) {
+	        chaine.append(", comme il n'y en a plus que ")
+	              .append(quantite)
+	              .append(", ")
+	              .append(acheteur.getNom())
+	              .append(" vide l'étal de ")
+	              .append(vendeur.getNom())
+	              .append(".\n");
+
+	        quantiteAcheter = quantite;
+	        quantite = 0;
+	    }
+
+	    if (quantite != 0) {
+	        quantite -= quantiteAcheter;
+
+	        chaine.append(". ")
+	              .append(acheteur.getNom())
+	              .append(", est ravi de tout trouver sur l'étal de ")
+	              .append(vendeur.getNom())
+	              .append("\n");
+	    }
+
+	    return chaine.toString();
 	}
-
+	
+	
 	public boolean contientProduit(String produit) {
 		return produit.equals(this.produit);
 	}

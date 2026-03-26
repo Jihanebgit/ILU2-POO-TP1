@@ -1,7 +1,8 @@
 package villagegaulois;
 
 public class VillageSansChefException extends Exception {
-	public VillageSansChefException(String message) {
-        super(message);
+
+    public VillageSansChefException() {
+        super("Le village n'a pas de chef !");
     }
 }

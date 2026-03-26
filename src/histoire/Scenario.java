@@ -11,7 +11,6 @@ public class Scenario {
 
 	public static void main(String[] args) {
 		Village village = new Village("le village des irréductibles", 10, 5);
-		VillageSansChefException villagesanschef = new VillageSansChefException("le village sans chef");
 		Chef abraracourcix = new Chef("Abraracourcix", 10, village);
 		village.setChef(abraracourcix);
 		Druide druide = new Druide("Panoramix", 2, 5, 10);
@@ -26,6 +25,7 @@ public class Scenario {
 		village.ajouterHabitant(obelix);
 		village.ajouterHabitant(druide);
 		village.ajouterHabitant(abraracourcix);
+		
 		try {
 
 		    System.out.println(village.afficherVillageois());
@@ -44,12 +44,40 @@ public class Scenario {
 		System.out.println(village.installerVendeur(druide, "fleurs", 10));
 
 		System.out.println(village.rechercherVendeursProduit("fleurs"));
+		
 		Etal etalFleur = village.rechercherEtal(bonemine);
-		System.out.println(etalFleur.acheterProduit(10, abraracourcix));
-		System.out.println(etalFleur.acheterProduit(15, obelix));
-		System.out.println(etalFleur.acheterProduit(15, assurancetourix));
+		if (etalFleur != null) {
+
+		    System.out.println(etalFleur.acheterProduit(10, abraracourcix));
+		    System.out.println(etalFleur.acheterProduit(15, obelix));
+		    System.out.println(etalFleur.acheterProduit(15, assurancetourix));
+
+		} else {
+		    System.out.println("Bonemine n'a pas d'étal !");
+		}
+		
+
 		System.out.println(village.partirVendeur(bonemine));
 		System.out.println(village.afficherMarche());
+		
+		System.out.println("TEST acheteur null :");
+		System.out.println(etalFleur.acheterProduit(5, null));
+		
+		System.out.println("TEST quantité invalide :");
+		System.out.println(etalFleur.acheterProduit(-5, abraracourcix));
+		
+		System.out.println("TEST étal vide :");
+		Etal etalVide = new Etal();
+		System.out.println(etalVide.acheterProduit(5, abraracourcix));
+		
+		
+		
+		Village villageSansChef = new Village("village test", 5, 2);
+		try {
+		    System.out.println(villageSansChef.afficherVillageois());
+		} catch (VillageSansChefException e) {
+		    System.out.println("Exception capturée : " + e.getMessage());
+		}
 	}
 
 }
