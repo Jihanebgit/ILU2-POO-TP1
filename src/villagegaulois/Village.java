@@ -13,7 +13,6 @@ public class Village {
 	public Village(String nom, int nbVillageoisMaximum, int nbEtals) {
 		this.nom = nom;
 		villageois = new Gaulois[nbVillageoisMaximum];
-		;
 		marche = new Marche(nbEtals);
 	}
 
@@ -38,7 +37,8 @@ public class Village {
 		}
 		for (int i = 0; i < nbVillageois; i++) {
 			Gaulois gaulois = villageois[i];
-			if (gaulois.getNom().equals(nomGaulois)) {
+			String nomGauloisTableau = gaulois.getNom();
+			if (nomGauloisTableau != null && nomGauloisTableau.equals(nomGaulois)) {
 				return gaulois;
 			}
 		}
@@ -174,8 +174,7 @@ public class Village {
 
 			Etal[] etalsProduit = new Etal[taille];
 
-			int j = 0;
-			for (int i = 0; i < etals.length; i++) {
+			for (int i = 0, j = 0; i < etals.length; i++) {
 				if (etals[i].contientProduit(produit)) {
 					etalsProduit[j] = etals[i];
 					j++;
@@ -187,7 +186,7 @@ public class Village {
 
 		private Etal trouverVendeur(Gaulois gaulois) {
 			for (int i = 0; i < etals.length; i++) {
-				if (gaulois.equals(etals[i].getVendeur())) {
+				if (gaulois != null && gaulois.equals(etals[i].getVendeur())) {
 					return etals[i];
 				}
 			}

@@ -63,6 +63,7 @@ public class Etal {
 		return "L'étal est libre";
 	}
 
+	//TODO bien lire l'énoncé, probleme avec gestion du null meme si null le code va continuer 
 	public String acheterProduit(int quantiteAcheter, Gaulois acheteur) {
 
 	    // gestion du null (exception)
