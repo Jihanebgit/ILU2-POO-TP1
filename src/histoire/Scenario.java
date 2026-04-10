@@ -46,14 +46,14 @@ public class Scenario {
 		System.out.println(village.rechercherVendeursProduit("fleurs"));
 		
 		Etal etalFleur = village.rechercherEtal(bonemine);
-		if (etalFleur != null) {
-
-		    System.out.println(etalFleur.acheterProduit(10, abraracourcix));
-		    System.out.println(etalFleur.acheterProduit(15, obelix));
-		    System.out.println(etalFleur.acheterProduit(15, assurancetourix));
-
-		} else {
-		    System.out.println("Bonemine n'a pas d'étal !");
+		try {
+			System.out.println(etalFleur.acheterProduit(10, abraracourcix));
+			System.out.println(etalFleur.acheterProduit(15, obelix));
+			System.out.println(etalFleur.acheterProduit(15, assurancetourix));
+		} catch(IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch( IllegalStateException e) {
+			e.printStackTrace();
 		}
 		
 

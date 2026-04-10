@@ -25,35 +25,25 @@ public class Etal {
 		etalOccupe = true;
 	}
 
+// PAS de JETER (!throw) d'exception faire copier coller du code depart pour ca et revoir consigne : libererEtal
 	public String libererEtal() {
+		StringBuilder chaine= new StringBuilder();
 		try {
-
-			if (!etalOccupe) {
-				throw new IllegalStateException("L'étal n'est pas occupé");
-			}
-			etalOccupe = false;
-			StringBuilder chaine = new StringBuilder();
-			chaine.append("Le vendeur ");
-			chaine.append(vendeur.getNom());
-			chaine.append(" quitte son étal, ");
-			
-			int produitVendu = quantiteDebutMarche - quantite;
-
-			if (produitVendu > 0) {
-				chaine.append("il a vendu ");
-				chaine.append(produitVendu);
-				chaine.append(" parmi ");
-				chaine.append(produit);
-				chaine.append(".\n");
-			} else {
-				chaine.append("il n'a malheureusement rien vendu.\n");
-			}
-			return chaine.toString();
-		} catch (IllegalStateException e) {
-
-			e.printStackTrace();
-			return "";
+		etalOccupe = false;
+		chaine.append("Le vendeur ");
+		chaine.append(vendeur.getNom());
+		chaine.append(" quitte son étal, ");
+		int produitVendu = quantiteDebutMarche - quantite;
+		if (produitVendu > 0) {
+			chaine.append(
+					"il a vendu " + produitVendu + " parmi " + produit + ".\n");
+		} else {
+			chaine.append("il n'a malheureusement rien vendu.\n");
 		}
+		}catch(NullPointerException e) {
+			e.printStackTrace();
+		}
+		return chaine.toString();
 	}
 
 	public String afficherEtal() {
@@ -63,69 +53,51 @@ public class Etal {
 		return "L'étal est libre";
 	}
 
-	//TODO bien lire l'énoncé, probleme avec gestion du null meme si null le code va continuer 
 	public String acheterProduit(int quantiteAcheter, Gaulois acheteur) {
 
-	    // gestion du null (exception)
-	    try {
-	        acheteur.getNom();
-	    } catch (NullPointerException e) {
-	        e.printStackTrace();
-	        return "";
-	    }
+		// quantité invalide (pas d'exception )
+		if (quantiteAcheter < 1) {
+			throw new IllegalArgumentException("Quantité non autorisé");
+		}
 
-	    // quantité invalide (pas d'exception )
-	    if (quantiteAcheter < 1) {
-	        return "";
-	    }
+		// étal vide
+		if (!etalOccupe) {
+			throw new IllegalStateException("Etal non occupé");
+		}
 
-	    // étal vide (pas d'exception )
-	    if (!etalOccupe) {
-	        return "";
-	    }
+		StringBuilder chaine = new StringBuilder();
 
-	    StringBuilder chaine = new StringBuilder();
+		try {
+			acheteur.getNom();
+			chaine.append(acheteur.getNom()).append(" veut acheter ").append(quantiteAcheter).append(" ")
+					.append(produit).append(" à ").append(vendeur.getNom());
 
-	    chaine.append(acheteur.getNom())
-	          .append(" veut acheter ")
-	          .append(quantiteAcheter)
-	          .append(" ")
-	          .append(produit)
-	          .append(" à ")
-	          .append(vendeur.getNom());
+			if (quantite == 0) {
+				chaine.append(", malheureusement il n'y en a plus !");
+				quantiteAcheter = 0;
+			}
 
-	    if (quantite == 0) {
-	        chaine.append(", malheureusement il n'y en a plus !");
-	        quantiteAcheter = 0;
-	    }
+			if (quantiteAcheter > quantite) {
+				chaine.append(", comme il n'y en a plus que ").append(quantite).append(", ").append(acheteur.getNom())
+						.append(" vide l'étal de ").append(vendeur.getNom()).append(".\n");
 
-	    if (quantiteAcheter > quantite) {
-	        chaine.append(", comme il n'y en a plus que ")
-	              .append(quantite)
-	              .append(", ")
-	              .append(acheteur.getNom())
-	              .append(" vide l'étal de ")
-	              .append(vendeur.getNom())
-	              .append(".\n");
+				quantiteAcheter = quantite;
+				quantite = 0;
+			}
 
-	        quantiteAcheter = quantite;
-	        quantite = 0;
-	    }
+			if (quantite != 0) {
+				quantite -= quantiteAcheter;
 
-	    if (quantite != 0) {
-	        quantite -= quantiteAcheter;
+				chaine.append(". ").append(acheteur.getNom()).append(", est ravi de tout trouver sur l'étal de ")
+						.append(vendeur.getNom()).append("\n");
+			}
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+		}
 
-	        chaine.append(". ")
-	              .append(acheteur.getNom())
-	              .append(", est ravi de tout trouver sur l'étal de ")
-	              .append(vendeur.getNom())
-	              .append("\n");
-	    }
-
-	    return chaine.toString();
+		return chaine.toString();
 	}
-	
-	
+
 	public boolean contientProduit(String produit) {
 		return produit.equals(this.produit);
 	}
