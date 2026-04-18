@@ -27,20 +27,19 @@ public class Etal {
 
 // PAS de JETER (!throw) d'exception faire copier coller du code depart pour ca et revoir consigne : libererEtal
 	public String libererEtal() {
-		StringBuilder chaine= new StringBuilder();
+		StringBuilder chaine = new StringBuilder();
 		try {
-		etalOccupe = false;
-		chaine.append("Le vendeur ");
-		chaine.append(vendeur.getNom());
-		chaine.append(" quitte son étal, ");
-		int produitVendu = quantiteDebutMarche - quantite;
-		if (produitVendu > 0) {
-			chaine.append(
-					"il a vendu " + produitVendu + " parmi " + produit + ".\n");
-		} else {
-			chaine.append("il n'a malheureusement rien vendu.\n");
-		}
-		}catch(NullPointerException e) {
+			etalOccupe = false;
+			chaine.append("Le vendeur ");
+			chaine.append(vendeur.getNom());
+			chaine.append(" quitte son étal, ");
+			int produitVendu = quantiteDebutMarche - quantite;
+			if (produitVendu > 0) {
+				chaine.append("il a vendu " + produitVendu + " parmi " + produit + ".\n");
+			} else {
+				chaine.append("il n'a malheureusement rien vendu.\n");
+			}
+		} catch (NullPointerException e) {
 			e.printStackTrace();
 		}
 		return chaine.toString();

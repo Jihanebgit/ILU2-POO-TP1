@@ -1,6 +1,5 @@
 package villagegaulois;
 
-//TODO bonnes pratique exception personnalisée
 public class VillageSansChefException extends IllegalArgumentException {
 	
 	public VillageSansChefException() {
